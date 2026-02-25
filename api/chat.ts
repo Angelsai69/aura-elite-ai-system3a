@@ -39,7 +39,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         "X-Title": "AIZA AI Elite",
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini",
+        model: "arcee-ai/trinity-large-preview:free",
         messages,
         max_tokens: 1000,
       }),
