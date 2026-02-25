@@ -1,0 +1,54 @@
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #0f0f14, #1c1c28);
+  color: white;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+}
+
+.section {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  background: linear-gradient(90deg, #6e8cff, #b47cff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.typing {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.card-grid {
+  display: flex;
+  gap: 2rem;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+.chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  padding: 1rem;
+  border-radius: 16px;
+}
