@@ -5,28 +5,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS")
   res.setHeader("Access-Control-Allow-Headers", "Content-Type")
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end()
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" })
-  }
+  if (req.method === "OPTIONS") return res.status(200).end()
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" })
 
   const apiKey = process.env.OPENROUTER_API_KEY
   if (!apiKey) {
     console.error("OPENROUTER_API_KEY is not set")
-    return res.status(500).json({ error: "Server configuration error: missing API key" })
+    return res.status(500).json({ reply: "Server configuration error: missing API key." })
   }
 
   let messages: any[]
   try {
     messages = req.body?.messages
     if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: "Invalid request: messages array required" })
+      return res.status(400).json({ reply: "Invalid request body." })
     }
   } catch {
-    return res.status(400).json({ error: "Invalid JSON body" })
+    return res.status(400).json({ reply: "Could not parse request." })
   }
 
   try {
@@ -40,7 +35,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
       body: JSON.stringify({
         model: "arcee-ai/trinity-large-preview:free",
-        messages,
+        messages: [
+          {
+            role: "system",
+            content: "You are AIZA, an elite AI automation assistant. You help businesses automate workflows, scale operations, and dominate their markets. Be sharp, confident, and concise. Speak like a world-class strategist."
+          },
+          ...messages
+        ],
         max_tokens: 1000,
       }),
     })
@@ -49,15 +50,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!response.ok) {
       console.error("OpenRouter error:", response.status, data)
-      return res.status(200).json({
-        reply: data?.error?.message || `OpenRouter error: ${response.status}`,
-      })
+      return res.status(200).json({ reply: data?.error?.message || "OpenRouter returned an error." })
     }
 
-    const reply: string = data.choices?.[0]?.message?.content ?? "No response"
+    const reply: string = data.choices?.[0]?.message?.content ?? "No response received."
     return res.status(200).json({ reply })
   } catch (err: any) {
     console.error("Handler error:", err?.message || err)
-    return res.status(500).json({ error: "Internal server error" })
+    return res.status(500).json({ reply: "Internal server error. Please try again." })
   }
 }
