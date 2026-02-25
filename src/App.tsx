@@ -4,8 +4,31 @@ import Cursor from "./components/Cursor"
 import ScrollProgress from "./components/ScrollProgress"
 import Hero from "./components/Hero"
 import Features from "./components/Features"
+import DashboardPreview from "./components/DashboardPreview"
 import Demo from "./components/Demo"
+import CTA from "./components/CTA"
 import AIChat from "./components/AIChat"
+import { useScrollEffects } from "./hooks/useScrollEffects"
+
+const SECTION_COUNT = 5
+
+function ScrollBlurOverlay() {
+  const { transitionBlur } = useScrollEffects(SECTION_COUNT)
+  if (transitionBlur < 0.5) return null
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        pointerEvents: "none",
+        zIndex: 90,
+        backdropFilter: `blur(${transitionBlur}px)`,
+        WebkitBackdropFilter: `blur(${transitionBlur}px)`,
+        transition: "backdrop-filter 0.1s linear",
+      }}
+    />
+  )
+}
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -16,28 +39,14 @@ export default function App() {
       <Loader onDone={() => setReady(true)} />
       {ready && (
         <>
+          <ScrollBlurOverlay />
           <ScrollProgress />
           <main>
             <Hero />
             <Features />
+            <DashboardPreview />
             <Demo />
-            <section className="section" style={{ scrollSnapAlign: "start" }}>
-              <div className="bg-layer">
-                <div className="grid-overlay" />
-                <div className="noise-overlay" />
-                <div className="orb" style={{ width: 600, height: 600, background: "var(--accent)", top: "50%", left: "50%", transform: "translate(-50%,-50%)", opacity: 0.08, position: "absolute", borderRadius: "50%", filter: "blur(100px)" }} />
-              </div>
-              <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: 600, padding: "0 2rem" }}>
-                <div className="section-label">AI Assistant</div>
-                <h2 className="section-title" style={{ marginBottom: "1rem" }}>
-                  Ask AIZA<br /><span>anything.</span>
-                </h2>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.8 }}>
-                  Your AI strategist is online 24/7.<br />
-                  Click the <strong style={{ color: "var(--accent2)" }}>✦</strong> button to start a conversation.
-                </p>
-              </div>
-            </section>
+            <CTA />
           </main>
           <AIChat />
         </>

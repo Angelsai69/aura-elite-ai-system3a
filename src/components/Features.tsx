@@ -1,54 +1,26 @@
 import { motion } from "framer-motion"
+import { useAdaptiveMotion } from "../hooks/useAdaptiveMotion"
 
 const CARDS = [
-  {
-    icon: "⚡",
-    title: "Instant Automation",
-    desc: "Deploy multi-step workflows in seconds. No code. No friction. Pure velocity.",
-    color: "#7c6aff",
-  },
-  {
-    icon: "🧠",
-    title: "Neural Intelligence",
-    desc: "Self-optimizing AI that learns your pipeline, adapts in real-time, and eliminates bottlenecks.",
-    color: "#38bdf8",
-  },
-  {
-    icon: "📈",
-    title: "Revenue Engine",
-    desc: "From lead capture to closed deal — fully automated qualification, nurturing, and conversion.",
-    color: "#a78bfa",
-  },
-  {
-    icon: "🛡️",
-    title: "Enterprise Security",
-    desc: "SOC 2 compliant. Zero-trust architecture. Your data stays sovereign.",
-    color: "#4ade80",
-  },
-  {
-    icon: "🔗",
-    title: "Universal Integrations",
-    desc: "Connect 500+ tools instantly. CRM, ERP, Slack, email — AIZA orchestrates everything.",
-    color: "#fb923c",
-  },
-  {
-    icon: "📊",
-    title: "Live Analytics",
-    desc: "Real-time dashboards with predictive insights. Know what's working before your competitors do.",
-    color: "#f472b6",
-  },
+  { icon: "⚡", title: "Instant Automation",       desc: "Deploy multi-step workflows in seconds. No code. No friction. Pure velocity.",                                  color: "#7c6aff" },
+  { icon: "🧠", title: "Neural Intelligence",       desc: "Self-optimizing AI that learns your pipeline, adapts in real-time, and eliminates bottlenecks.",               color: "#38bdf8" },
+  { icon: "📈", title: "Revenue Engine",            desc: "From lead capture to closed deal — fully automated qualification, nurturing, and conversion.",                  color: "#a78bfa" },
+  { icon: "🛡️", title: "Enterprise Security",       desc: "SOC 2 compliant. Zero-trust architecture. Your data stays sovereign.",                                         color: "#4ade80" },
+  { icon: "🔗", title: "Universal Integrations",   desc: "Connect 500+ tools instantly. CRM, ERP, Slack, email — AIZA orchestrates everything.",                         color: "#fb923c" },
+  { icon: "📊", title: "Live Analytics",            desc: "Real-time dashboards with predictive insights. Know what's working before your competitors do.",                color: "#f472b6" },
 ]
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
-}
-const item = {
-  hidden: { opacity: 0, y: 32, filter: "blur(8px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-}
-
 export default function Features() {
+  const motion_ = useAdaptiveMotion()
+  const container = {
+    hidden: {},
+    show: { transition: { staggerChildren: motion_.stagger } },
+  }
+  const item = {
+    hidden: { opacity: 0, y: 32, filter: motion_.blur ? "blur(8px)" : "none" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+  }
+
   return (
     <section className="section">
       <div className="bg-layer">
@@ -58,16 +30,9 @@ export default function Features() {
       </div>
 
       <div className="features-content">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <div className="section-label">Core Capabilities</div>
-          <h2 className="section-title">
-            Built for teams that<br /><span>refuse to lose.</span>
-          </h2>
+          <h2 className="section-title">Built for teams that<br /><span>refuse to lose.</span></h2>
         </motion.div>
 
         <motion.div

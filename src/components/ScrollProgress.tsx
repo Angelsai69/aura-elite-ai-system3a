@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react"
 
-const SECTIONS = ["Hero", "Features", "Demo", "Chat"]
+const SECTIONS = ["Hero", "Features", "Dashboard", "Demo", "Launch"]
 
 export default function ScrollProgress() {
   const [active, setActive] = useState(0)
 
   useEffect(() => {
-    const container = document.querySelector("html")!
+    const el = document.documentElement
     const onScroll = () => {
-      const idx = Math.round(container.scrollTop / window.innerHeight)
+      const idx = Math.round(el.scrollTop / window.innerHeight)
       setActive(Math.min(idx, SECTIONS.length - 1))
     }
-    container.addEventListener("scroll", onScroll)
-    return () => container.removeEventListener("scroll", onScroll)
+    el.addEventListener("scroll", onScroll, { passive: true })
+    return () => el.removeEventListener("scroll", onScroll)
   }, [])
 
   const goTo = (i: number) => {
-    document.querySelector("html")!.scrollTo({ top: i * window.innerHeight, behavior: "smooth" })
+    document.documentElement.scrollTo({ top: i * window.innerHeight, behavior: "smooth" })
   }
 
   return (
